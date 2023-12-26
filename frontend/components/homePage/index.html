@@ -1,0 +1,124 @@
+<div class="w-full p-3">
+  <div>
+    <div class="flex justify-between items-center">
+      <div class="flex gap-4">
+        <load ="/components/icons/imageProfile.html" />
+        <div>
+          <div id="whatDate" class="date"></div>
+          <div class="text-black font-bold" id="tasksHeaderUsername"></div>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <i class="bi bi-bell cursor-pointer"></i>
+        <i class="bi bi-heart hover:text-red-700 cursor-pointer"></i>
+      </div>
+    </div>
+    <div class="relative my-5">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+          />
+        </svg>
+      </div>
+      <input
+        type="search"
+        id="searchData"
+        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-transparent rounded-lg bg-gray-50 focus:ring-black focus:border-black"
+        placeholder="Search"
+        required
+      />
+    </div>
+    <div class="flex justify-between items-center py-1">
+      <h2>Most popular</h2>
+      <p>See All</p>
+    </div>
+    <div
+      id="buttnon_brands-container"
+      class="brands-button flex flex-nowrap overflow-x-scroll p-3"
+    >
+      <button id="all" class="my-active">All</button>
+      <button id="nike">Nike</button>
+      <button id="adidas">Adidas</button>
+      <button id="puma">Puma</button>
+      <button id="asics">Asics</button>
+      <button id="reebok">Reebok</button>
+      <button id="newba">New Balance</button>
+      <button id="convers">Converse</button>
+      <button id="hushpuppies">Hushpuppies</button>
+    </div>
+    <div
+      class="product-list mx-auto grid w-full h-[500px] my-4 grid-cols-2 items-start justify-center overflow-y-scroll"
+    ></div>
+    
+  </div>
+  <div
+    class="flex gap-3 justify-center items-center pb-8"
+    id="pagination-buttons"
+  ></div>
+
+  <div
+    class="flex items-center justify-between px-1 absolute z-40 top-[840px] -translate-x-1/2 left-1/2 py-5 gap-10"
+  >
+    <div>
+      <a
+        href="/home"
+        class="flex flex-col justify-center items-center cursor-pointer"
+      >
+        <i class="bi bi-house-door-fill"></i>
+        <p>home</p>
+      </a>
+    </div>
+    <div>
+      <a
+        href="#"
+        class="flex flex-col justify-center items-center cursor-pointer"
+      >
+        <i class="bi bi-bag"></i>
+        <p>cart</p>
+      </a>
+    </div>
+
+    <div>
+      <a
+        href="#"
+        class="flex flex-col justify-center items-center cursor-pointer"
+      >
+        <i class="bi bi-cart"></i>
+        <p>order</p>
+      </a>
+    </div>
+    <div>
+      <a
+        href="#"
+        class="flex flex-col justify-center items-center cursor-pointer"
+      >
+        <i class="bi bi-wallet"></i>
+        <p>wallet</p>
+      </a>
+    </div>
+    <div>
+      <a
+        href="#"
+        class="flex flex-col justify-center items-center cursor-pointer"
+      >
+        <i class="bi bi-person"></i>
+        <p>profile</p>
+      </a>
+    </div>
+  </div>
+</div>
+<script type="module" src="/libs/userInfo.js"></script>
+<script type="module" src="/components/homePage/home.js"></script>

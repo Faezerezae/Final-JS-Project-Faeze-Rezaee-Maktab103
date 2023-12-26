@@ -1,0 +1,65 @@
+<div class="flex justify-between items-center">
+  <span id="time"></span>
+  <div class="flex justify-center items-center gap-1">
+    <i class="bi bi-bar-chart-fill"></i>
+    <i class="bi bi-wifi-2 text-2xl"></i>
+    <i class="bi bi-battery-full"></i>
+  </div>
+</div>
+
+<div class="w-5">
+  <a href="/home"><load ="/components/icons/arrow-left-short.html" /></a>
+</div>
+
+<div class="w-full">
+  <div class="relative my-5 flex justify-center items-center">
+    <div
+      class="absolute inset-y-0 start-0 flex justify-center items-center ps-3 pointer-events-none"
+    >
+      <i
+        class="bi bi-search w-4 h-4 text-gray-500 flex justify-center items-center"
+      ></i>
+    </div>
+    <input
+      type="search"
+      id="search-input"
+      class="w-full p-2 pr-8 ps-10 text-sm text-gray-900 border flex justify-center items-center border-transparent rounded-lg bg-gray-50 focus:ring-black focus:border-black"
+      placeholder="Search"
+      required
+    />
+    <div
+      class="absolute inset-y-0 end-0 flex justify-center items-center pe-3 pointer-events-none"
+    >
+      <i
+        class="bi bi-ui-radios w-4 h-4 text-gray-500 flex justify-center items-center"
+      ></i>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center pb-10">
+    <div class="font-bold">Results for "<span id="text-value-input"></span><span>"</span></div>
+    <div><span id="total-result-found"></span> founds</div>
+  </div>
+  <div id="no-value-search" class="hidden flex-col justify-center items-center">
+    <img
+      src="./components/images/35_Light_search result not found.png"
+      alt="noot"
+    />
+    <h1 class="font-bold">Not Found</h1>
+    <p class="text-center p-2 text-sm">
+      sorry the kyeword you entred connot bo found please check agian or search
+      with onother keyword
+    </p>
+  </div>
+
+  <div
+    id="result-search"
+    class="mx-auto grid w-full h-[600px] my-4 grid-cols-2 items-start justify-center overflow-y-visible overflow-x-hidden"
+  ></div>
+  <div
+    class="flex gap-3 justify-center items-center pb-8"
+    id="pagination-buttons"
+  ></div>
+</div>
+
+<script type="module" src="/components/searchdata/search.js"></script>
