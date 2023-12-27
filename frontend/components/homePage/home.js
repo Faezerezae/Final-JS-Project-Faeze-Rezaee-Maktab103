@@ -62,13 +62,13 @@ function renderBrands(list) {
   brandDivAll.textContent = "All";
   brandDivAll.addEventListener("click", () => {
     allBrand();
-    brandDivAll.classList.add("selected");
-    const previouslySelected = document.querySelectorAll(".selected");
-    if (previouslySelected) {
-      previouslySelected.forEach((item) => {
+    brandDivAll.classList.add("my-active");
+    const previouslymyActive = document.querySelectorAll(".my-active");
+    if (previouslymyActive) {
+      previouslymyActive.forEach((item) => {
         console.log(item.textContent);
         if (item.textContent == "All") return;
-        item.classList.remove("selected");
+        item.classList.remove("my-active");
       });
     }
   });
@@ -91,13 +91,15 @@ function renderBrands(list) {
     );
     brandDiv.textContent = capitalizeFirstLetter(item);
     brandDiv.addEventListener("click", () => {
-      const previouslySelected = document.querySelectorAll(".selected");
-      brandDivAll.classList.remove("selected");
+      const previouslymyActive = document.querySelectorAll(".my-active");
+      brandDivAll.classList.remove("my-active");
 
-      if (previouslySelected) {
-        previouslySelected.forEach((item) => item.classList.remove("selected"));
+      if (previouslymyActive) {
+        previouslymyActive.forEach((item) =>
+          item.classList.remove("my-active")
+        );
       }
-      brandDiv.classList.add("selected");
+      brandDiv.classList.add("my-active");
 
       getProductsByBrand(item);
       scroll = false;
@@ -128,7 +130,7 @@ async function getProductsByBrand(brand, page = 1) {
   }
 }
 
-async function getAllBrands() {
+async function getAllNameBrands() {
   const token = window.sessionStorage.getItem("token");
   try {
     const response = await axios({
@@ -147,7 +149,7 @@ async function getAllBrands() {
   }
 }
 
-getAllBrands();
+getAllNameBrands();
 
 //--------------------------------------------------------allBrands
 

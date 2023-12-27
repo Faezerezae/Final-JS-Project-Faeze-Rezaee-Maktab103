@@ -287,8 +287,13 @@
   scrollbar-width: none;
 }
 
-.selected{
-  background-color: black;
-  color: white;
+.my-active {
+  @apply text-white bg-black whitespace-nowrap;
 }
+
+
+
+
+
+
 
