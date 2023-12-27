@@ -33,7 +33,7 @@ function checkTimee() {
     whatDate.appendChild(pElement);
   }
 }
-//---------------------------------------------------
+//---------------------------- get dom
 const button_container = document.querySelector(".brands-button");
 const productList = document.querySelector(".product-list");
 const pageNumber = document.getElementById("pagination-buttons");
@@ -43,7 +43,7 @@ let sneakers = [];
 let list = [];
 let totalSneaker = 0;
 
-//---------------------------------------------function render
+//-----------------------------------function render
 function renderBrands(list) {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -109,7 +109,7 @@ function renderBrands(list) {
     button_container.appendChild(brandDiv);
   });
 }
-//---------------------------------------------getProductsByBrand
+//---------------------------getProductsByBrand
 async function getProductsByBrand(brand, page = 1) {
   console.log("Brand:", brand);
   console.log("Page:", page);
@@ -131,7 +131,7 @@ async function getProductsByBrand(brand, page = 1) {
     }
   }
 }
-//-----------------------------------------getAllNameBrands
+//----------------------------getAllNameBrands
 async function getAllNameBrands() {
   const token = window.sessionStorage.getItem("token");
   try {
@@ -153,7 +153,7 @@ async function getAllNameBrands() {
 
 getAllNameBrands();
 
-//--------------------------------------------------------allBrands
+//-----------------------------------allBrands
 
 async function allBrand(page = 1, brand = "") {
   const token = window.sessionStorage.getItem("token");
