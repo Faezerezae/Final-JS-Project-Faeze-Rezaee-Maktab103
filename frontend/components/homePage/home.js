@@ -33,51 +33,41 @@ function checkTimee() {
     whatDate.appendChild(pElement);
   }
 }
+//---------------------------------------------------
 const button_container = document.querySelector(".brands-button");
-//active buttun
-// const button_container = document.querySelectorAll(".brands-button button");
-// let tag = "All";
-// button_container.forEach((buttonEvent) => {
-//   buttonEvent.addEventListener("click", change);
-// });
-// function change() {
-//   button_container.forEach((tag) => (tag.classList = ""));
-//   this.classList.add("my-active");
-//   tag = this.innerHTML;
-// }
-
-//nav popular
-// const mostAllpopular = document.querySelector("#all");
-// const nikePopular = document.querySelector("#nike");
-// const adidasPopular = document.querySelector("#adidas");
-// const pumaPopular = document.querySelector("#puma");
-// const asicsPopular = document.querySelector("#asics");
-// const reebokPopular = document.querySelector("#reebok");
-// const newbaBtnPopular = document.querySelector("#newba");
-// const conversBtnPopular = document.querySelector("#convers");
-// const hushpuppiesBtnPopular = document.querySelector("#hushpuppies");
 const productList = document.querySelector(".product-list");
 const pageNumber = document.getElementById("pagination-buttons");
 const searchData = document.querySelector("#searchData");
 let sneaker = [];
+let sneakers = [];
+let list = [];
+let totalSneaker = 0;
 function renderBrands(list) {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
-
   button_container.innerHTML = "";
-
   const brandDivAll = document.createElement("div");
-  brandDivAll.classList.add("rounded-3xl", "border-solid", "border-black", "border-2", "self-center", "p-2", "w-auto", "px-6", "cursor-pointer");
+  brandDivAll.classList.add(
+    "rounded-3xl",
+    "border-solid",
+    "border-black",
+    "border-2",
+    "self-center",
+    "p-2",
+    "w-auto",
+    "px-6",
+    "cursor-pointer"
+  );
   brandDivAll.textContent = "All";
   brandDivAll.addEventListener("click", () => {
     allBrand();
     brandDivAll.classList.add("selected");
     const previouslySelected = document.querySelectorAll(".selected");
     if (previouslySelected) {
-      previouslySelected.forEach(item => {
+      previouslySelected.forEach((item) => {
         console.log(item.textContent);
-        if(item.textContent=="All") return;
+        if (item.textContent == "All") return;
         item.classList.remove("selected");
       });
     }
@@ -86,35 +76,50 @@ function renderBrands(list) {
 
   list.forEach((item) => {
     const brandDiv = document.createElement("div");
-    brandDiv.classList.add("rounded-3xl", "border", "whitespace-nowrap", "self-center", "border-solid", "border-black", "border-2", "p-2", "w-auto", "px-6", "cursor-pointer");
+    brandDiv.classList.add(
+      "rounded-3xl",
+      "border",
+      "whitespace-nowrap",
+      "self-center",
+      "border-solid",
+      "border-black",
+      "border-2",
+      "p-2",
+      "w-auto",
+      "px-6",
+      "cursor-pointer"
+    );
     brandDiv.textContent = capitalizeFirstLetter(item);
     brandDiv.addEventListener("click", () => {
       const previouslySelected = document.querySelectorAll(".selected");
       brandDivAll.classList.remove("selected");
 
       if (previouslySelected) {
-        previouslySelected.forEach(item => item.classList.remove("selected"));
+        previouslySelected.forEach((item) => item.classList.remove("selected"));
       }
       brandDiv.classList.add("selected");
 
       getProductsByBrand(item);
+      scroll = false;
     });
     button_container.appendChild(brandDiv);
   });
 }
 
-async function getProductsByBrand(brand) {
+async function getProductsByBrand(brand, page = 1) {
+  console.log("Brand:", brand);
+  console.log("Page:", page);
   try {
     const token = window.sessionStorage.getItem("token");
     const response = await axios({
       method: "get",
-      url: `http://localhost:3000/sneaker?page=1&limit=10&brands=${brand}`,
+      url: `http://localhost:3000/sneaker?page=${page}&limit=10&brands=${brand}`,
       headers: { Authorization: `Bearer ${token}` },
     });
-    sneaker = response.data.data;
-    console.log(sneaker);
+    sneakers = [...response.data.data];
+    console.log(sneakers);
+    listRenderer(sneakers);
     paginationButton(response.data.totalPages, brand);
-    listRenderer(sneaker);
   } catch (error) {
     if (error.response) {
       console.error("Response Data:", error.response.data);
@@ -123,7 +128,6 @@ async function getProductsByBrand(brand) {
   }
 }
 
-let list = [];
 async function getAllBrands() {
   const token = window.sessionStorage.getItem("token");
   try {
@@ -145,19 +149,7 @@ async function getAllBrands() {
 
 getAllBrands();
 
-let totalSneaker = 0;
-
-//get AllSneaker ------------------------------------------------------------------------
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   fetchByBrand("")();
-// });
-
-//--------------------------------------------------------Brands
-document.addEventListener("DOMContentLoaded",()=>{
-  allBrand();
-
-})
+//--------------------------------------------------------allBrands
 
 async function allBrand(page = 1, brand = "") {
   const token = window.sessionStorage.getItem("token");
@@ -171,14 +163,14 @@ async function allBrand(page = 1, brand = "") {
     });
     console.log(response);
     totalSneaker = response.data.total;
-    sneaker = response.data.data;
-    paginationButton(response.data.totalPages, brand);
+    sneaker = [...response.data.data];
     listRenderer(sneaker);
+    paginationButton(response.data.totalPages, brand);
   } catch (error) {
     errorHandler(error);
   }
 }
-
+allBrand();
 
 //----------------------------------------------paginationButton
 function paginationButton(total, brand) {
@@ -197,106 +189,24 @@ function paginationButton(total, brand) {
 
       btn.classList.add("bg-blue-500", "text-white");
 
-      getProductsByBrand(j, brand);
+      getProductsByBrand(brand, j);
     });
     pageNumber.append(btn);
   }
 }
 
-// function fetchByBrands(brand) {
-//   return async function (page = 1) {
-//     await fetchDataAndRenderBrands(page, brand);
-//   };
-// }
-
-// mostAllpopular.addEventListener("click", () => {
-//   fetchByBrands("")();
-//   scroll = false;
-// });
-
-// nikePopular.addEventListener("click", () => {
-//   fetchByBrands("NIKE")();
-//   scroll = false;
-// });
-
-// adidasPopular.addEventListener("click", () => {
-//   fetchByBrands("ADIDAS")();
-//   scroll = false;
-// });
-
-// pumaPopular.addEventListener("click", () => {
-//   fetchByBrands("PUMA")();
-//   scroll = false;
-// });
-
-// hushpuppiesBtnPopular.addEventListener("click", () => {
-//   fetchByBrands("HUSHPUPPIES")();
-//   scroll = false;
-// });
-
-// asicsPopular.addEventListener("click", () => {
-//   fetchByBrands("ASICS")();
-//   scroll = false;
-// });
-
-// reebokPopular.addEventListener("click", () => {
-//   fetchByBrands("REEBOK")();
-//   scroll = false;
-// });
-
-// newbaBtnPopular.addEventListener("click", () => {
-//   fetchByBrands("NEW BALANCE")();
-//   scroll = false;
-// });
-
-// conversBtnPopular.addEventListener("click", () => {
-//   fetchByBrands("CONVERSE")();
-//   scroll = false;
-// });
-
 //------------------------------------- Infinite Scroll
-// let page = 1;
-// let loading = false;
-// let scroll = true;
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   fetchByBrand("")();
-// });
-
-// productList.addEventListener("scrollend", () => {
-//   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-//   if (!scroll) return;
-//   if (scrollTop + clientHeight >= scrollHeight && !loading) {
-//     page++;
-//     fetchDataAndRender(page);
-//   }
-// });
-
-// async function fetchDataAndRender(page = 1, brand = "") {
-//   const token = window.sessionStorage.getItem("token");
-//   const url = `http://localhost:3000/sneaker?page=${page}&limit=10&brands=${brand}`;
-//   try {
-//     loading = true;
-//     const response = await axios({
-//       method: "get",
-//       url,
-//       headers: { Authorization: `Bearer ${token}` },
-//     });
-//     totalSneaker = response.data.total;
-//     sneaker = [...response.data.data];
-//     listRenderer(sneaker);
-//     loading = false;
-//   } catch (error) {
-//     errorHandler(error);
-//     loading = false;
-//   }
-// }
-// function fetchByBrand(brand) {
-//   return async function (page = 1) {
-//     await fetchDataAndRender(page, brand);
-//   };
-// }
-
+let page = 1;
+let loading = false;
+let scroll = true;
+productList.addEventListener("scrollend", () => {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  if (!scroll) return;
+  if (scrollTop + clientHeight >= scrollHeight && !loading) {
+    page++;
+    allBrand(page);
+  }
+});
 //--------------------------------------------------------------card
 function Card(id = "", imageURL = "", name = "", price = "") {
   return `
@@ -321,7 +231,6 @@ function Card(id = "", imageURL = "", name = "", price = "") {
 }
 
 function listRenderer(sneaker) {
-  console.log(sneaker); // افزودن این خط
   let html = "";
   for (const product of sneaker) {
     html += Card(product.id, product.imageURL, product.name, product.price);
