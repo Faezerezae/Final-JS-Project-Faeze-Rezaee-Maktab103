@@ -67,7 +67,9 @@ function sneakerInformation(sneaker) {
   const colorTag = colors
     .map((color) => {
       return `
-    <div class="rounded-full border border-gray-200 h-8 w-8 flex justify-center items-center cursor-pointer" style="background-color:${color};"></div>`;
+    <div class="rounded-full border border-gray-200 h-8 w-8 flex justify-center items-center cursor-pointer" style="background-color:${color};">
+    <i class="bi bi-check hidden"></i>
+    </div>`;
     })
     .join("");
 
@@ -155,7 +157,17 @@ function render(sneaker) {
   root.innerHTML = sneakerInformation(sneaker);
 }
 
+const activeButton = document
+  .getElementById("active-bottun")
+  .addEventListener("click", () => {
+    activeButton.classList.add("my-active");
+  });
 
-const activeButton=document.getElementById("active-bottun").addEventListener("click",()=>{
-  activeButton.classList.add("my-active")
-})
+const tic = document.getElementById("tic");
+
+tic.addEventListener("click", () => {
+  // const biCheck = document.querySelector(".bi-check");
+  // biCheck.classList.remove("hidden");
+  // biCheck.classList.add("flex");
+  console.log("object");
+});

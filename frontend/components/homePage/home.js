@@ -33,34 +33,118 @@ function checkTimee() {
     whatDate.appendChild(pElement);
   }
 }
-
+const button_container = document.querySelector(".brands-button");
 //active buttun
-const button_container = document.querySelectorAll(".brands-button button");
-let tag = "All";
-button_container.forEach((buttonEvent) => {
-  buttonEvent.addEventListener("click", change);
-});
-function change() {
-  button_container.forEach((tag) => (tag.classList = ""));
-  this.classList.add("my-active");
-  tag = this.innerHTML;
-}
+// const button_container = document.querySelectorAll(".brands-button button");
+// let tag = "All";
+// button_container.forEach((buttonEvent) => {
+//   buttonEvent.addEventListener("click", change);
+// });
+// function change() {
+//   button_container.forEach((tag) => (tag.classList = ""));
+//   this.classList.add("my-active");
+//   tag = this.innerHTML;
+// }
 
 //nav popular
-const mostAllpopular = document.querySelector("#all");
-const nikePopular = document.querySelector("#nike");
-const adidasPopular = document.querySelector("#adidas");
-const pumaPopular = document.querySelector("#puma");
-const asicsPopular = document.querySelector("#asics");
-const reebokPopular = document.querySelector("#reebok");
-const newbaBtnPopular = document.querySelector("#newba");
-const conversBtnPopular = document.querySelector("#convers");
-const hushpuppiesBtnPopular = document.querySelector("#hushpuppies");
+// const mostAllpopular = document.querySelector("#all");
+// const nikePopular = document.querySelector("#nike");
+// const adidasPopular = document.querySelector("#adidas");
+// const pumaPopular = document.querySelector("#puma");
+// const asicsPopular = document.querySelector("#asics");
+// const reebokPopular = document.querySelector("#reebok");
+// const newbaBtnPopular = document.querySelector("#newba");
+// const conversBtnPopular = document.querySelector("#convers");
+// const hushpuppiesBtnPopular = document.querySelector("#hushpuppies");
 const productList = document.querySelector(".product-list");
 const pageNumber = document.getElementById("pagination-buttons");
 const searchData = document.querySelector("#searchData");
-
 let sneaker = [];
+function renderBrands(list) {
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
+
+  button_container.innerHTML = "";
+
+  const brandDivAll = document.createElement("div");
+  brandDivAll.classList.add("rounded-3xl", "border-solid", "border-black", "border-2", "self-center", "p-2", "w-auto", "px-6", "cursor-pointer");
+  brandDivAll.textContent = "All";
+  brandDivAll.addEventListener("click", () => {
+    allBrand();
+    brandDivAll.classList.add("selected");
+    const previouslySelected = document.querySelectorAll(".selected");
+    if (previouslySelected) {
+      previouslySelected.forEach(item => {
+        console.log(item.textContent);
+        if(item.textContent=="All") return;
+        item.classList.remove("selected");
+      });
+    }
+  });
+  button_container.appendChild(brandDivAll);
+
+  list.forEach((item) => {
+    const brandDiv = document.createElement("div");
+    brandDiv.classList.add("rounded-3xl", "border", "whitespace-nowrap", "self-center", "border-solid", "border-black", "border-2", "p-2", "w-auto", "px-6", "cursor-pointer");
+    brandDiv.textContent = capitalizeFirstLetter(item);
+    brandDiv.addEventListener("click", () => {
+      const previouslySelected = document.querySelectorAll(".selected");
+      brandDivAll.classList.remove("selected");
+
+      if (previouslySelected) {
+        previouslySelected.forEach(item => item.classList.remove("selected"));
+      }
+      brandDiv.classList.add("selected");
+
+      getProductsByBrand(item);
+    });
+    button_container.appendChild(brandDiv);
+  });
+}
+
+async function getProductsByBrand(brand) {
+  try {
+    const token = window.sessionStorage.getItem("token");
+    const response = await axios({
+      method: "get",
+      url: `http://localhost:3000/sneaker?page=1&limit=10&brands=${brand}`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    sneaker = response.data.data;
+    console.log(sneaker);
+    paginationButton(response.data.totalPages, brand);
+    listRenderer(sneaker);
+  } catch (error) {
+    if (error.response) {
+      console.error("Response Data:", error.response.data);
+      console.error("Response Status:", error.response.status);
+    }
+  }
+}
+
+let list = [];
+async function getAllBrands() {
+  const token = window.sessionStorage.getItem("token");
+  try {
+    const response = await axios({
+      method: "get",
+      url: "http://localhost:3000/sneaker/brands",
+      headers: { Authorization: ` Bearer ${token}` },
+    });
+    list = response.data;
+    console.log(list);
+    renderBrands(list);
+  } catch (error) {
+    if (error.response) {
+      console.error("Response Data:", error.response.data);
+      console.error("Response Status:", error.response.status);
+    }
+  }
+}
+
+getAllBrands();
+
 let totalSneaker = 0;
 
 //get AllSneaker ------------------------------------------------------------------------
@@ -70,10 +154,14 @@ let totalSneaker = 0;
 // });
 
 //--------------------------------------------------------Brands
+document.addEventListener("DOMContentLoaded",()=>{
+  allBrand();
 
-async function fetchDataAndRenderBrands(page = 1, brand = "") {
+})
+
+async function allBrand(page = 1, brand = "") {
   const token = window.sessionStorage.getItem("token");
-  const url = `http://localhost:3000/sneaker?page=${page}&limit=10&brands=${brand}`;
+  const url = `http://localhost:3000/sneaker?page=${page}&limit=10`;
 
   try {
     const response = await axios({
@@ -90,6 +178,8 @@ async function fetchDataAndRenderBrands(page = 1, brand = "") {
     errorHandler(error);
   }
 }
+
+
 //----------------------------------------------paginationButton
 function paginationButton(total, brand) {
   console.log(total);
@@ -107,105 +197,105 @@ function paginationButton(total, brand) {
 
       btn.classList.add("bg-blue-500", "text-white");
 
-      fetchDataAndRenderBrands(j, brand);
+      getProductsByBrand(j, brand);
     });
     pageNumber.append(btn);
   }
 }
 
-function fetchByBrands(brand) {
-  return async function (page = 1) {
-    await fetchDataAndRenderBrands(page, brand);
-  };
-}
+// function fetchByBrands(brand) {
+//   return async function (page = 1) {
+//     await fetchDataAndRenderBrands(page, brand);
+//   };
+// }
 
-mostAllpopular.addEventListener("click", () => {
-  fetchByBrands("")();
-  scroll=false;
-});
+// mostAllpopular.addEventListener("click", () => {
+//   fetchByBrands("")();
+//   scroll = false;
+// });
 
-nikePopular.addEventListener("click", () => {
-  fetchByBrands("NIKE")();
-  scroll=false;
-});
+// nikePopular.addEventListener("click", () => {
+//   fetchByBrands("NIKE")();
+//   scroll = false;
+// });
 
-adidasPopular.addEventListener("click", () => {
-  fetchByBrands("ADIDAS")();
-  scroll=false;
-});
+// adidasPopular.addEventListener("click", () => {
+//   fetchByBrands("ADIDAS")();
+//   scroll = false;
+// });
 
-pumaPopular.addEventListener("click", () => {
-  fetchByBrands("PUMA")();
-  scroll=false;
-});
+// pumaPopular.addEventListener("click", () => {
+//   fetchByBrands("PUMA")();
+//   scroll = false;
+// });
 
-hushpuppiesBtnPopular.addEventListener("click", () => {
-  fetchByBrands("HUSHPUPPIES")();
-  scroll=false;
-});
+// hushpuppiesBtnPopular.addEventListener("click", () => {
+//   fetchByBrands("HUSHPUPPIES")();
+//   scroll = false;
+// });
 
-asicsPopular.addEventListener("click", () => {
-  fetchByBrands("ASICS")();
-  scroll=false;
-});
+// asicsPopular.addEventListener("click", () => {
+//   fetchByBrands("ASICS")();
+//   scroll = false;
+// });
 
-reebokPopular.addEventListener("click", () => {
-  fetchByBrands("REEBOK")();
-  scroll=false;
-});
+// reebokPopular.addEventListener("click", () => {
+//   fetchByBrands("REEBOK")();
+//   scroll = false;
+// });
 
-newbaBtnPopular.addEventListener("click", () => {
-  fetchByBrands("NEW BALANCE")();
-  scroll=false;
-});
+// newbaBtnPopular.addEventListener("click", () => {
+//   fetchByBrands("NEW BALANCE")();
+//   scroll = false;
+// });
 
-conversBtnPopular.addEventListener("click", () => {
-  fetchByBrands("CONVERSE")();
-  scroll=false;
-});
+// conversBtnPopular.addEventListener("click", () => {
+//   fetchByBrands("CONVERSE")();
+//   scroll = false;
+// });
 
 //------------------------------------- Infinite Scroll
-let page = 1;
-let loading = false;
-let scroll = true;
+// let page = 1;
+// let loading = false;
+// let scroll = true;
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchByBrand("")();
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   fetchByBrand("")();
+// });
 
-productList.addEventListener("scrollend", () => {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-  if (!scroll) return;
-  if (scrollTop + clientHeight >= scrollHeight && !loading) {
-    page++;
-    fetchDataAndRender(page);
-  }
-});
+// productList.addEventListener("scrollend", () => {
+//   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+//   if (!scroll) return;
+//   if (scrollTop + clientHeight >= scrollHeight && !loading) {
+//     page++;
+//     fetchDataAndRender(page);
+//   }
+// });
 
-async function fetchDataAndRender(page = 1, brand = "") {
-  const token = window.sessionStorage.getItem("token");
-  const url = `http://localhost:3000/sneaker?page=${page}&limit=10&brands=${brand}`;
-  try {
-    loading = true;
-    const response = await axios({
-      method: "get",
-      url,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    totalSneaker = response.data.total;
-    sneaker = [...response.data.data];
-    listRenderer(sneaker);
-    loading = false;
-  } catch (error) {
-    errorHandler(error);
-    loading = false;
-  }
-}
-function fetchByBrand(brand) {
-  return async function (page = 1) {
-    await fetchDataAndRender(page, brand);
-  };
-}
+// async function fetchDataAndRender(page = 1, brand = "") {
+//   const token = window.sessionStorage.getItem("token");
+//   const url = `http://localhost:3000/sneaker?page=${page}&limit=10&brands=${brand}`;
+//   try {
+//     loading = true;
+//     const response = await axios({
+//       method: "get",
+//       url,
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     totalSneaker = response.data.total;
+//     sneaker = [...response.data.data];
+//     listRenderer(sneaker);
+//     loading = false;
+//   } catch (error) {
+//     errorHandler(error);
+//     loading = false;
+//   }
+// }
+// function fetchByBrand(brand) {
+//   return async function (page = 1) {
+//     await fetchDataAndRender(page, brand);
+//   };
+// }
 
 //--------------------------------------------------------------card
 function Card(id = "", imageURL = "", name = "", price = "") {

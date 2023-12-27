@@ -287,16 +287,8 @@
   scrollbar-width: none;
 }
 
-.my-active {
-  @apply text-white font-medium rounded-full text-sm px-5 text-center me-2 mb-2 py-2 bg-black whitespace-nowrap;
-}
-
-.brands-button button {
-  @apply border-2 border-gray-800 focus:outline-none font-medium rounded-full text-sm px-5 text-center me-2 mb-2 py-2 whitespace-nowrap;
-}
-
-
-.selected {
-  @apply bg-blue-500 text-white; /* اعمال استایل برای دکمه‌های انتخاب شده */
+.selected{
+  background-color: black;
+  color: white;
 }
 
