@@ -130,7 +130,6 @@ function Card(id = "", imageURL = "", name = "", price = "") {
     </div>
     <p id="productPrice" class="text-gray-700 mx-2">$${price}</p>
   </div>
-  </div>
       `;
 }
 
