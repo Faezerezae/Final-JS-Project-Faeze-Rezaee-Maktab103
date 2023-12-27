@@ -67,7 +67,7 @@ function sneakerInformation(sneaker) {
   const colorTag = colors
     .map((color) => {
       return `
-    <div class="rounded-full h-8 w-8 flex justify-center items-center cursor-pointer" style="background-color:${color};"></div>`;
+    <div class="rounded-full border border-gray-200 h-8 w-8 flex justify-center items-center cursor-pointer" style="background-color:${color};"></div>`;
     })
     .join("");
 

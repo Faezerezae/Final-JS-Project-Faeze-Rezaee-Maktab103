@@ -39,14 +39,18 @@ form.addEventListener("submit", async function (ev) {
 
 const showPasswordButton = document.querySelector("#show-password");
 
-showPasswordButton.addEventListener("click",togglePasswordVisibility)
+showPasswordButton.addEventListener("click", togglePasswordVisibility);
 
-  function togglePasswordVisibility() {
-    const passwordInput = document.getElementById("password");
-
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-    } else {
-      passwordInput.type = "password";
-    }
+function togglePasswordVisibility() {
+  const passwordInput = document.getElementById("password");
+  const eye = document.getElementById("eye");
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eye.classList.remove("bi-eye-slash");
+    eye.classList.add("bi-eye");
+  } else {
+    passwordInput.type = "password";
+    eye.classList.remove("bi-eye");
+    eye.classList.add("bi-eye-slash");
   }
+}
