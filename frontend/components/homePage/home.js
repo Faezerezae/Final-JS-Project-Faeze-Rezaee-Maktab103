@@ -42,6 +42,8 @@ let sneaker = [];
 let sneakers = [];
 let list = [];
 let totalSneaker = 0;
+
+//---------------------------------------------function render
 function renderBrands(list) {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -107,7 +109,7 @@ function renderBrands(list) {
     button_container.appendChild(brandDiv);
   });
 }
-
+//---------------------------------------------getProductsByBrand
 async function getProductsByBrand(brand, page = 1) {
   console.log("Brand:", brand);
   console.log("Page:", page);
@@ -129,7 +131,7 @@ async function getProductsByBrand(brand, page = 1) {
     }
   }
 }
-
+//-----------------------------------------getAllNameBrands
 async function getAllNameBrands() {
   const token = window.sessionStorage.getItem("token");
   try {
@@ -184,12 +186,10 @@ function paginationButton(total, brand) {
       "inline-flex items-center border-t-2 border-gray-500 px-4 pt-2 text-sm font-medium text-gray-600";
 
     btn.textContent = j;
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("button").forEach((button) => {
-        button.classList.remove("bg-blue-500", "text-white");
-      });
-
-      btn.classList.add("bg-blue-500", "text-white");
+    btn.addEventListener("click", (e) => {
+      const clickedBtn = e.target;
+      console.log(clickedBtn);
+      clickedBtn.classList.add("bg-indigo-500");
 
       getProductsByBrand(brand, j);
     });
